@@ -40,9 +40,9 @@
     {
       "identity" : "codeeditsourceeditor",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor",
+      "location" : "https://github.com/Chrissie21/CodeEditSourceEditor",
       "state" : {
-        "revision" : "1fa4d3c3ffba007482111466cb9721416f97ae00"
+        "revision" : "462dd038dfcaecd8e5f0dcb1baef8eae2cac93df"
       }
     },
     {

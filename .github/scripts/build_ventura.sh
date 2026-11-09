@@ -40,6 +40,18 @@ xcodebuild "${XCODEBUILD_ARGS[@]}" \
     -only-testing:CodeEditTests/TerminalScrollerLayoutTests \
     test 2>&1 | tee "$OUTPUT_DIR/tests.log"
 
+# Exercise the dependency's programmatic view loading, including private find
+# and suggestion controllers, in its own test target on the modern build host.
+SOURCE_EDITOR_PATH="$BUILD_DIR/SourcePackages/checkouts/CodeEditSourceEditor"
+if [[ ! -f "$SOURCE_EDITOR_PATH/Package.swift" ]]; then
+    SOURCE_EDITOR_PATH="$BUILD_DIR/SourcePackages/checkouts/codeeditsourceeditor"
+fi
+xcrun swift test \
+    --package-path "$SOURCE_EDITOR_PATH" \
+    --scratch-path "$BUILD_DIR/source-editor-tests" \
+    --skip-update \
+    --filter ViewLoadingTests 2>&1 | tee "$OUTPUT_DIR/source-editor-tests.log"
+
 # Check every bundled Mach-O, not just the main executable: a framework can
 # independently require a newer macOS or import the missing Dispatch symbol.
 python3 - "$APP_PATH" <<'PY' 2>&1 | tee "$OUTPUT_DIR/binary-checks.log"

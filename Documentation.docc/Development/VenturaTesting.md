@@ -25,7 +25,7 @@ Check launch, folder/file opening, editing/saving, highlighting, completion and 
 
 In particular, verify extension selection after the first extension appears and tab-count animations; these observers use both previous and new values. Check that observers do not fire merely because views appear or unrelated state redraws them.
 
-The SourceEditor revision is pinned to the upstream macOS 13 fix (`1fa4d3c3ffba007482111466cb9721416f97ae00`, PR #356). Its intervening completion changes need runtime validation. Version 0.15.2 still predates that fix. Prefer a suitable tagged release when upstream provides one.
+SourceEditor temporarily points to the compatibility branch in the user fork. It includes upstream PR #356 (the missing Dispatch symbol) plus the programmatic-view fix for issue #362: editor/find/suggestion controllers create their own views, and scroll/find layout is configured before constraints are activated. The pipeline runs the dependency's three `ViewLoadingTests` separately, covering automatic controller loading and nonzero editor layout. Prefer an upstream tagged release containing these fixes when one is available; the temporary fork reference is an integration dependency, not an upstream release.
 
 ## Build locally on a suitable modern Mac
 
