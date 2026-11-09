@@ -222,12 +222,12 @@ struct EditorTabs: View {
                     tabLocations[id] = tabItemGeoReader
                         .frame(in: .global)
                 }
-                .onChange(
+                .onChangeCompatible(
                     of: tabItemGeoReader.frame(in: .global)
                 ) { _, tabCGRect in
                     tabLocations[id] = tabCGRect
                 }
-                .onChange(
+                .onChangeCompatible(
                     of: tabItemGeoReader.size.width
                 ) { _, newWidth in
                     tabWidth[id] = newWidth
