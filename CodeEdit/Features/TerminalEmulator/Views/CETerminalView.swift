@@ -11,6 +11,16 @@ import AppKit
 /// # Please see dev note in ``CELocalShellTerminalView``!
 
 class CETerminalView: TerminalView {
+    override func addSubview(_ view: NSView) {
+        // SwiftTerm adds its scroller again on every resize. Reattaching the
+        // already frontmost scroller invalidates Ventura's constraint pass and
+        // can keep the window in a layout loop. Preserve genuine reordering.
+        if view is NSScroller, view.superview === self, subviews.last === view {
+            return
+        }
+        super.addSubview(view)
+    }
+
     override func setFrameSize(_ newSize: NSSize) {
         if newSize != .zero {
             super.setFrameSize(newSize)

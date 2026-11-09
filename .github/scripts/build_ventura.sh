@@ -37,6 +37,7 @@ ditto "$BUILD_DIR/Build/Products/Debug/CodeEdit.app" "$APP_PATH"
 xcodebuild "${XCODEBUILD_ARGS[@]}" \
     -resultBundlePath "$OUTPUT_DIR/compatibility-tests.xcresult" \
     -only-testing:CodeEditTests/OnChangeCompatibilityTests \
+    -only-testing:CodeEditTests/TerminalScrollerLayoutTests \
     test 2>&1 | tee "$OUTPUT_DIR/tests.log"
 
 # Check every bundled Mach-O, not just the main executable: a framework can

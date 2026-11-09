@@ -13,9 +13,9 @@ After reviewing and publishing the compatibility branch to your fork:
 
 The workflow only reads repository contents. It needs no signing certificate or deployment credentials and does not publish a release. Artifacts expire after seven days. Standard public-repository runners are free; artifact storage still follows account limits.
 
-The workflow first makes a clean app build and saves a copy before Xcode injects its test frameworks into the host app. It then compiles the test targets, runs `OnChangeCompatibilityTests` on the newer runner, and verifies each bundled Mach-O in the saved app has an Intel slice, a deployment minimum no newer than macOS 13.0, and no reference to the known missing generic Dispatch `asyncAndWait` symbol. Those checks do not replace testing on Ventura or prove every imported API is available there. Logs are uploaded even if the build fails.
+The workflow first makes a clean app build and saves a copy before Xcode injects its test frameworks into the host app. It then compiles the test targets, runs `OnChangeCompatibilityTests` and `TerminalScrollerLayoutTests` on the newer runner, and verifies each bundled Mach-O in the saved app has an Intel slice, a deployment minimum no newer than macOS 13.0, and no reference to the known missing generic Dispatch `asyncAndWait` symbol. Those checks do not replace testing on Ventura or prove every imported API is available there. Logs are uploaded even if the build fails.
 
-The helper's four tests also run in isolation on Ventura using the exact production helper and XCTest file. That verifies the older-system observation path, not the full app.
+The four observation tests and three terminal layout tests also run in isolation on Ventura using the exact production sources, XCTest files and pinned SwiftTerm source. They verify the older-system observation path and that resizing does not repeatedly reattach the frontmost scrollbar while preserving its geometry and genuine reordering. This is not the full app test suite.
 
 ## Verify the app on Ventura
 
