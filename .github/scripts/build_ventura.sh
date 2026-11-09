@@ -15,21 +15,30 @@ BUILD_DIR="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/codeedit-ventura-derived-data"
     shasum -a 256 CodeEdit.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
 } > "$OUTPUT_DIR/build-environment.txt"
 
-xcodebuild \
-    -project CodeEdit.xcodeproj \
-    -scheme CodeEdit \
-    -configuration Debug \
-    -destination 'platform=macOS,arch=x86_64' \
-    -derivedDataPath "$BUILD_DIR" \
-    -resultBundlePath "$OUTPUT_DIR/compatibility-tests.xcresult" \
-    -onlyUsePackageVersionsFromResolvedFile \
-    -skipPackagePluginValidation \
-    -only-testing:CodeEditTests/OnChangeCompatibilityTests \
-    ARCHS=x86_64 ONLY_ACTIVE_ARCH=YES \
-    CODE_SIGNING_ALLOWED=NO \
-    test 2>&1 | tee "$OUTPUT_DIR/build.log"
+XCODEBUILD_ARGS=(
+    -project CodeEdit.xcodeproj
+    -scheme CodeEdit
+    -configuration Debug
+    -destination 'platform=macOS,arch=x86_64'
+    -derivedDataPath "$BUILD_DIR"
+    -onlyUsePackageVersionsFromResolvedFile
+    -skipPackagePluginValidation
+    ARCHS=x86_64 ONLY_ACTIVE_ARCH=YES
+    CODE_SIGNING_ALLOWED=NO
+)
 
-APP_PATH="$BUILD_DIR/Build/Products/Debug/CodeEdit.app"
+# Clean normal build products so a local rerun cannot retain injected test
+# frameworks. Preserve this app before the test action modifies its host bundle.
+xcodebuild "${XCODEBUILD_ARGS[@]}" clean build 2>&1 | tee "$OUTPUT_DIR/build.log"
+APP_DIR="$(mktemp -d "$BUILD_DIR/ventura-product.XXXXXX")"
+APP_PATH="$APP_DIR/CodeEdit.app"
+ditto "$BUILD_DIR/Build/Products/Debug/CodeEdit.app" "$APP_PATH"
+
+xcodebuild "${XCODEBUILD_ARGS[@]}" \
+    -resultBundlePath "$OUTPUT_DIR/compatibility-tests.xcresult" \
+    -only-testing:CodeEditTests/OnChangeCompatibilityTests \
+    test 2>&1 | tee "$OUTPUT_DIR/tests.log"
+
 # Check every bundled Mach-O, not just the main executable: a framework can
 # independently require a newer macOS or import the missing Dispatch symbol.
 python3 - "$APP_PATH" <<'PY' 2>&1 | tee "$OUTPUT_DIR/binary-checks.log"
