@@ -70,13 +70,13 @@ struct FileInspectorView: View {
         .onReceive(editorManager.activeEditor.objectWillChange) { _ in
             updateInspectorSource()
         }
-        .onChange(of: editorManager.activeEditor) { _, _ in
+        .onChangeCompatible(of: editorManager.activeEditor) { _, _ in
             updateInspectorSource()
         }
-        .onChange(of: editorManager.activeEditor.selectedTab) { _, _ in
+        .onChangeCompatible(of: editorManager.activeEditor.selectedTab) { _, _ in
             updateInspectorSource()
         }
-        .onChange(of: textEditing) { _, newValue in
+        .onChangeCompatible(of: textEditing) { _, newValue in
             updateFileOptions(newValue)
         }
     }
@@ -126,7 +126,7 @@ struct FileInspectorView: View {
                 Text(language.id.rawValue.capitalized).tag(language as CodeLanguage?)
             }
         }
-        .onChange(of: language) { _, newValue in
+        .onChangeCompatible(of: language) { _, newValue in
             file?.fileDocument?.language = newValue
         }
     }
@@ -171,7 +171,7 @@ struct FileInspectorView: View {
             Text("Spaces").tag(SettingsData.TextEditingSettings.IndentOption.IndentType.spaces)
             Text("Tabs").tag(SettingsData.TextEditingSettings.IndentOption.IndentType.tab)
         }
-        .onChange(of: indentOption) { _, newValue in
+        .onChangeCompatible(of: indentOption) { _, newValue in
             file?.fileDocument?.indentOption = newValue == textEditing.indentOption ? nil : newValue
         }
     }
@@ -215,14 +215,14 @@ struct FileInspectorView: View {
                 .help("The number of spaces to insert when the tab key is pressed.")
             }
         }
-        .onChange(of: defaultTabWidth) { _, newValue in
+        .onChangeCompatible(of: defaultTabWidth) { _, newValue in
             file?.fileDocument?.defaultTabWidth = newValue == textEditing.defaultTabWidth ? nil : newValue
         }
     }
 
     private var wrapLinesToggle: some View {
         Toggle("Wrap lines", isOn: $wrapLines)
-            .onChange(of: wrapLines) { _, newValue in
+            .onChangeCompatible(of: wrapLines) { _, newValue in
                 file?.fileDocument?.wrapLines = newValue == textEditing.wrapLinesToEditorWidth ? nil : newValue
             }
     }

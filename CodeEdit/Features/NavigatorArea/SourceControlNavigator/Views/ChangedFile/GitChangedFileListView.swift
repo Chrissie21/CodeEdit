@@ -29,7 +29,7 @@ struct GitChangedFileListView: View {
             if showStaged {
                 Toggle("", isOn: $staged)
                     .labelsHidden()
-                    .onChange(of: staged) { _, newStaged in
+                    .onChangeCompatible(of: staged) { _, newStaged in
                         Task {
                             if changedFile.isStaged != newStaged {
                                 if newStaged {
@@ -51,7 +51,7 @@ struct GitChangedFileListView: View {
         }
         .listItemTint(listItemTint)
         .help(changedFile.fileURL.relativePath)
-        .onChange(of: changedFile.isStaged) { _, newStaged in
+        .onChangeCompatible(of: changedFile.isStaged) { _, newStaged in
             staged = newStaged
         }
     }

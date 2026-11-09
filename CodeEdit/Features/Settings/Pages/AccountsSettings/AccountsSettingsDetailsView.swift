@@ -147,7 +147,7 @@ struct AccountsSettingsDetailsView: View {
                 .padding(.top, 10)
             }
         }
-        .onChange(of: currentAccount) { _, newValue in
+        .onChangeCompatible(of: currentAccount) { _, newValue in
             account = newValue
         }
         .navigationTitle(currentAccount.description)

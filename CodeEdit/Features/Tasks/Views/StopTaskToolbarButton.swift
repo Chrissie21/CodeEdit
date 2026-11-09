@@ -43,8 +43,8 @@ struct StopTaskToolbarButton: View {
             .easeInOut(duration: 0.3),
             value: currentSelectedStatus
         )
-        .onChange(of: taskManager.selectedTaskID) { _, _ in updateStatusListener() }
-        .onChange(of: taskManager.activeTasks) { _, _ in updateStatusListener() }
+        .onChangeCompatible(of: taskManager.selectedTaskID) { _, _ in updateStatusListener() }
+        .onChangeCompatible(of: taskManager.activeTasks) { _, _ in updateStatusListener() }
         .onAppear(perform: updateStatusListener)
         .onDisappear {
             statusListener?.cancel()

@@ -40,7 +40,7 @@ struct SettingsColorPicker<Content>: View where Content: View {
                     .labelsHidden()
             }
         }
-        .onChange(of: selectedColor) { _, newValue in
+        .onChangeCompatible(of: selectedColor) { _, newValue in
             color = newValue
         }
     }

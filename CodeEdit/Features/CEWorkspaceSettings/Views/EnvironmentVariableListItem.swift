@@ -50,7 +50,7 @@ struct EnvironmentVariableListItem: View {
                 .autocorrectionDisabled()
                 .labelsHidden()
         }
-        .onChange(of: isKeyFocused) { _, isFocused in
+        .onChangeCompatible(of: isKeyFocused) { _, isFocused in
             if isFocused {
                 if selectedEnvID != environmentVariable.id {
                     selectedEnvID = environmentVariable.id
@@ -62,10 +62,10 @@ struct EnvironmentVariableListItem: View {
                 }
             }
         }
-        .onChange(of: key) { _, newValue in
+        .onChangeCompatible(of: key) { _, newValue in
             environmentVariable.key = newValue
         }
-        .onChange(of: value) { _, newValue in
+        .onChangeCompatible(of: value) { _, newValue in
             environmentVariable.value = newValue
         }
     }

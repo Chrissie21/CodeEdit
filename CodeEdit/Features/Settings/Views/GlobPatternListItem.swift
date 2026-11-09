@@ -51,7 +51,7 @@ struct GlobPatternListItem: View {
                     }
                 }
             }
-            .onChange(of: isFocused) { _, newIsFocused in
+            .onChangeCompatible(of: isFocused) { _, newIsFocused in
                 if newIsFocused {
                     if !selection.contains(pattern.id) {
                         selection = [pattern.id]

@@ -19,7 +19,7 @@ struct EditorTabButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .onChange(of: configuration.isPressed) { _, isPressed in
+            .onChangeCompatible(of: configuration.isPressed) { _, isPressed in
                 self.isPressing = isPressed
             }
     }

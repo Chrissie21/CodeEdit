@@ -311,7 +311,7 @@ struct EditorTabs: View {
                         // On first tab appeared, jump to the corresponding position.
                         scrollReader.scrollTo(editor.selectedTab)
                     }
-                    .onChange(of: editor.tabs) { tabs, newValue in
+                    .onChangeCompatible(of: editor.tabs) { tabs, newValue in
                         if tabs.count == newValue.count {
                             updateForTabCountChange(geometryProxy: geometryProxy)
                         } else {
@@ -329,14 +329,14 @@ struct EditorTabs: View {
                         }
                     }
                     // When selected tab is changed, scroll to it if possible.
-                    .onChange(of: editor.selectedTab) { _, newValue in
+                    .onChangeCompatible(of: editor.selectedTab) { _, newValue in
                         withAnimation {
                             scrollReader.scrollTo(newValue?.file.id)
                         }
                     }
 
                     // When window size changes, re-compute the expected tab width.
-                    .onChange(of: geometryProxy.size.width) { _, _ in
+                    .onChangeCompatible(of: geometryProxy.size.width) { _, _ in
                         withAnimation {
                             scrollReader.scrollTo(editor.selectedTab?.file.id)
                         }

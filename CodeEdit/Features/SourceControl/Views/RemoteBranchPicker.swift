@@ -67,7 +67,7 @@ struct RemoteBranchPicker: View {
                 updateRemote()
             }
         }
-        .onChange(of: remote) { _, newValue in
+        .onChangeCompatible(of: remote) { _, newValue in
             if newValue == nil {
                 sourceControlManager.addExistingRemoteSheetIsPresented = true
             } else {

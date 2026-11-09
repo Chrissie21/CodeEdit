@@ -63,7 +63,7 @@ struct SourceControlNavigatorChangesList: View {
                 }
             }
         )
-        .onChange(of: selection) { _, newSelection in
+        .onChangeCompatible(of: selection) { _, newSelection in
             if newSelection.count == 1,
                let file = newSelection.first {
                 openGitFile(file)

@@ -92,7 +92,7 @@ struct FindNavigatorForm: View {
                         }
                     )
                     .help("Match Case")
-                    .onChange(of: caseSensitive) { _, newValue in
+                    .onChangeCompatible(of: caseSensitive) { _, newValue in
                         state.caseSensitive = newValue
                     }
                 },
